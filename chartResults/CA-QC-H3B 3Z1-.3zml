@@ -1,0 +1,111 @@
+[{
+	"id":"document",
+	"version":"1.0"
+},{
+	"id":"czm-vsub-CA-QC-H3B 3Z1",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"home": "true",
+	"position":{
+		"cartographicDegrees":[
+			-73.5664595,45.5051466,50
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"10pt Segoe UI Semibold",
+		"fillColor": {"rgba":[255,255,255,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"H3B 3Z1"
+          }
+         ]
+	}
+},{
+	"id":"three-Lbl-CA-QC-H3B 3Z1",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"position":{
+		"cartesian":[
+		-100,
+		200,
+		0
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"16pt Segoe UI Semibold",
+		"fillColor": {"rgba":[200,200,200,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"H3B 3Z1"
+          }
+         ]
+     }
+   },{
+	"id":"three-poly-CA-QC-H3B 3Z1-gross",
+    "name" : "Stage 1 Altitude",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "polyline" : {
+        "positions" : {
+			"cartesian":[
+0,0,1,166.17532869194426,100,1,500,41.6,1
+			]
+        },
+    "transId" : [
+"38K6056"
+    ],
+        "material" : {
+            "solidColor" : {
+                "color" : {"rgba" : [0,255,0,255]}
+            }
+        },
+        "width" : 3
+    }
+  },{
+	"id":"three-last-CA-QC-H3B 3Z1-gross",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[5,0.41600000000000004,0.01]
+
+    },
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"1pt Segoe UI Semibold",
+		"fillColor": {"rgba":[0,255,0,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"$20.80"
+          }
+         ]
+     }
+  },{
+	"id":"three-trans-CA-QC-H3B 3Z1-38K6056",
+    "transId" : "38K6056",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[1.6617532869194427,1,0.01]
+
+    }
+  },{
+	"id":"czm-trans-CA-QC-H3B 3Z1-38K6056",
+	"availability":"2017-09-11T22:45:20.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "38K6056",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>2 Black 6G Sata Data Cables, 19.5 inches long with metal clips</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/11/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>22:45:20</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>20.8</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 3595 Detroiter Drive, West Melbourne, FL, 32905, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>38K6056</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			1266829.728528489,
+			-4294811.3784366185,
+			4526837.938585612
+		]
+	}
+}]

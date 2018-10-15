@@ -1,0 +1,94 @@
+[{
+	"id":"document",
+	"version":"1.0"
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-GA-30553-", "scope":"shared"},
+	"source":"US-GA-30553-",
+	"position":{
+		"cartesian":[
+		0,
+		0,
+		0
+		]
+	}
+},{
+	"id":"czm-sub-US-GA-",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"home": "true",
+	"position":{
+		"cartographicDegrees":[
+			-82.9000751,32.1656221,50
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"14pt Segoe UI Semibold",
+		"fillColor": {"rgba":[255,255,255,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"Georgia"
+          }
+         ]
+	}
+},{
+	"id":"three-Lbl-US-GA-",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"position":{
+		"cartesian":[
+		150,
+		200,
+		0
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"16pt Segoe UI Semibold",
+		"fillColor": {"rgba":[200,200,200,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"Georgia"
+          }
+         ]
+     }
+   },{
+	"id":"three-poly-US-GA--gross",
+    "name" : "Stage 1 Altitude",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "polyline" : {
+        "positions" : {
+			"cartesian":[
+0,0,1,129.8514141321085,151.9736842105263,1,500,31.6,1
+			]
+        },
+        "material" : {
+            "solidColor" : {
+                "color" : {"rgba" : [0,255,0,255]}
+            }
+        },
+        "width" : 3
+    }
+  },{
+	"id":"three-last-US-GA--gross",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[5,0.316,0.01]
+
+    },
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"1pt Segoe UI Semibold",
+		"fillColor": {"rgba":[0,255,0,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"$15.80"
+          }
+         ]
+     }
+  }]

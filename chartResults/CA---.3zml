@@ -1,0 +1,127 @@
+[{
+	"id":"document",
+	"version":"1.0"
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-FL--", "scope":"shared"},
+	"source":"US---",
+	"position":{
+		"cartesian":[
+		0,
+		100,
+		0
+		]
+	}
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-GA--", "scope":"shared"},
+	"source":"US---",
+	"position":{
+		"cartesian":[
+		0,
+		100,
+		0
+		]
+	}
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-Il--", "scope":"shared"},
+	"source":"US---",
+	"position":{
+		"cartesian":[
+		0,
+		100,
+		0
+		]
+	}
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"CA-QC--", "scope":"shared"},
+	"source":"CA---",
+	"position":{
+		"cartesian":[
+		0,
+		100,
+		-300
+		]
+	}
+},{
+	"id":"czm-cat-CA--",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"home": "true",
+	"position":{
+		"cartographicDegrees":[
+			-78.60266,27.747386,50
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"14pt Segoe UI Semibold",
+		"fillColor": {"rgba":[255,255,255,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"Canada"
+          }
+         ]
+	}
+},{
+	"id":"three-Lbl-CA--",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"position":{
+		"cartesian":[
+		-100,
+		200,
+		0
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"16pt Segoe UI Semibold",
+		"fillColor": {"rgba":[200,200,200,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"Canada"
+          }
+         ]
+     }
+   },{
+	"id":"three-poly-CA---gross",
+    "name" : "Stage 1 Altitude",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "polyline" : {
+        "positions" : {
+			"cartesian":[
+0,0,1,166.17532869194426,300,1,500,41.6,1
+			]
+        },
+        "material" : {
+            "solidColor" : {
+                "color" : {"rgba" : [0,255,0,255]}
+            }
+        },
+        "width" : 3
+    }
+  },{
+	"id":"three-last-CA---gross",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[5,0.41600000000000004,0.01]
+
+    },
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"1pt Segoe UI Semibold",
+		"fillColor": {"rgba":[0,255,0,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"$20.80"
+          }
+         ]
+     }
+  }]

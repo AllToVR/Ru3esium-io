@@ -1,0 +1,127 @@
+[{
+	"id":"document",
+	"version":"1.0"
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-FL-32904-", "scope":"shared"},
+	"source":"US-FL-32904-",
+	"position":{
+		"cartesian":[
+		0,
+		0,
+		0
+		]
+	}
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-FL-32905-", "scope":"shared"},
+	"source":"US-FL-32905-",
+	"position":{
+		"cartesian":[
+		0,
+		-100,
+		0
+		]
+	}
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-FL-32931-", "scope":"shared"},
+	"source":"US-FL-32931-",
+	"position":{
+		"cartesian":[
+		0,
+		-200,
+		0
+		]
+	}
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-FL-34233-", "scope":"shared"},
+	"source":"US-FL-34233-",
+	"position":{
+		"cartesian":[
+		0,
+		-300,
+		0
+		]
+	}
+},{
+	"id":"czm-sub-US-FL-",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"home": "true",
+	"position":{
+		"cartographicDegrees":[
+			-81.5157535,27.6648274,50
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"14pt Segoe UI Semibold",
+		"fillColor": {"rgba":[255,255,255,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"Florida"
+          }
+         ]
+	}
+},{
+	"id":"three-Lbl-US-FL-",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"position":{
+		"cartesian":[
+		-100,
+		200,
+		0
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"16pt Segoe UI Semibold",
+		"fillColor": {"rgba":[200,200,200,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"Florida"
+          }
+         ]
+     }
+   },{
+	"id":"three-poly-US-FL--gross",
+    "name" : "Stage 1 Altitude",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "polyline" : {
+        "positions" : {
+			"cartesian":[
+0,0,1,0,126.35046113306983,1,18.507429293394576,165.87615283267456,1,37.01485858678915,213.30698287220025,1,55.522287880183725,313.30698287220025,1,74.0297171735783,284.45322793148875,1,92.555448258163,259.15678524374175,1,111.34398483871392,243.87351778656125,1,148.35884342550307,298.6824769433465,1,218.68707474040247,340.3162055335968,1,235.22880940473524,331.62055335968375,1,412.36382644802126,227.27272727272725,1,500,96.60000000000001,1
+			]
+        },
+        "material" : {
+            "solidColor" : {
+                "color" : {"rgba" : [0,255,0,255]}
+            }
+        },
+        "width" : 3
+    }
+  },{
+	"id":"three-last-US-FL--gross",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[5,0.9660000000000001,0.01]
+
+    },
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"1pt Segoe UI Semibold",
+		"fillColor": {"rgba":[0,255,0,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"$48.30"
+          }
+         ]
+     }
+  }]

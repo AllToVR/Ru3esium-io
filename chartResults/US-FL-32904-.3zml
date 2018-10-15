@@ -1,0 +1,136 @@
+[{
+	"id":"document",
+	"version":"1.0"
+},{
+	"id":"czm-vsub-US-FL-32904",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"home": "true",
+	"position":{
+		"cartographicDegrees":[
+			-80.7879407,27.966866,50
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"10pt Segoe UI Semibold",
+		"fillColor": {"rgba":[255,255,255,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"32904"
+          }
+         ]
+	}
+},{
+	"id":"three-Lbl-US-FL-32904",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"position":{
+		"cartesian":[
+		-100,
+		200,
+		0
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"16pt Segoe UI Semibold",
+		"fillColor": {"rgba":[200,200,200,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"32904"
+          }
+         ]
+     }
+   },{
+	"id":"three-poly-US-FL-32904-gross",
+    "name" : "Stage 1 Altitude",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "polyline" : {
+        "positions" : {
+			"cartesian":[
+0,0,1,111.34398483871392,-15.2832674571805,1,148.35884342550307,39.52569169960474,1,500,30,1
+			]
+        },
+    "transId" : [
+"69M06980712","38K60714"
+    ],
+        "material" : {
+            "solidColor" : {
+                "color" : {"rgba" : [0,255,0,255]}
+            }
+        },
+        "width" : 3
+    }
+  },{
+	"id":"three-last-US-FL-32904-gross",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[5,0.3,0.01]
+
+    },
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"1pt Segoe UI Semibold",
+		"fillColor": {"rgba":[0,255,0,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"$15.00"
+          }
+         ]
+     }
+  },{
+	"id":"three-trans-US-FL-32904-69M06980712",
+    "transId" : "69M06980712",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[1.1134398483871393,-0.152832674571805,0.01]
+
+    }
+  },{
+	"id":"three-trans-US-FL-32904-38K60714",
+    "transId" : "38K60714",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[1.4835884342550307,0.3952569169960474,0.01]
+
+    }
+  },{
+	"id":"czm-trans-US-FL-32904-69M06980712",
+	"availability":"2017-09-08T20:41:20.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "69M06980712",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>2 Black 6G Sata Data Cables, 19.5 inches long with metal clips</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/8/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>20:41:20</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>-5.8</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 3595 Detroiter Drive, West Melbourne, FL, 32905, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>69M06980712</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			913769.756540913,
+			-5558603.190494754,
+			2981222.6428250694
+		]
+	}
+},{
+	"id":"czm-trans-US-FL-32904-38K60714",
+	"availability":"2017-09-10T22:41:20.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "38K60714",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>2 Black 6G Sata Data Cables, 19.5 inches long with metal clips</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/10/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>22:41:20</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>20.8</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 3595 Detroiter Drive, West Melbourne, FL, 32905, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>38K60714</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			913769.756540913,
+			-5558603.190494754,
+			2981222.6428250694
+		]
+	}
+}]

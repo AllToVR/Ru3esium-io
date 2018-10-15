@@ -1,0 +1,236 @@
+[{
+	"id":"document",
+	"version":"1.0"
+},{
+	"id":"czm-vsub-US-FL-32905",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"home": "true",
+	"position":{
+		"cartographicDegrees":[
+			-80.6049374,28.0298719,50
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"10pt Segoe UI Semibold",
+		"fillColor": {"rgba":[255,255,255,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"32905"
+          }
+         ]
+	}
+},{
+	"id":"three-Lbl-US-FL-32905",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"position":{
+		"cartesian":[
+		-100,
+		200,
+		0
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"16pt Segoe UI Semibold",
+		"fillColor": {"rgba":[200,200,200,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"32905"
+          }
+         ]
+     }
+   },{
+	"id":"three-poly-US-FL-32905-gross",
+    "name" : "Stage 1 Altitude",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "polyline" : {
+        "positions" : {
+			"cartesian":[
+0,0,1,0,-73.64953886693017,1,18.507429293394576,-34.12384716732544,1,37.01485858678915,13.306982872200251,1,55.522287880183725,113.30698287220025,1,74.0297171735783,84.45322793148878,1,235.22880940473524,75.75757575757575,1,500,133.4,1
+			]
+        },
+    "transId" : [
+"0NL45133B","0NL46133C","0N346133D","0NL4593E","0N46133F","1L523H"
+    ],
+        "material" : {
+            "solidColor" : {
+                "color" : {"rgba" : [0,255,0,255]}
+            }
+        },
+        "width" : 3
+    }
+  },{
+	"id":"three-last-US-FL-32905-gross",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[5,1.334,0.01]
+
+    },
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"1pt Segoe UI Semibold",
+		"fillColor": {"rgba":[0,255,0,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"$66.70"
+          }
+         ]
+     }
+  },{
+	"id":"three-trans-US-FL-32905-0NL45133B",
+    "transId" : "0NL45133B",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[0,-0.7364953886693018,0.01]
+
+    }
+  },{
+	"id":"three-trans-US-FL-32905-0NL46133C",
+    "transId" : "0NL46133C",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[0.18507429293394576,-0.3412384716732544,0.01]
+
+    }
+  },{
+	"id":"three-trans-US-FL-32905-0N346133D",
+    "transId" : "0N346133D",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[0.3701485858678915,0.13306982872200251,0.01]
+
+    }
+  },{
+	"id":"three-trans-US-FL-32905-0NL4593E",
+    "transId" : "0NL4593E",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[0.5552228788018373,1.1330698287220025,0.01]
+
+    }
+  },{
+	"id":"three-trans-US-FL-32905-0N46133F",
+    "transId" : "0N46133F",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[0.740297171735783,0.8445322793148878,0.01]
+
+    }
+  },{
+	"id":"three-trans-US-FL-32905-1L523H",
+    "transId" : "1L523H",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[2.3522880940473523,0.7575757575757575,0.01]
+
+    }
+  },{
+	"id":"czm-trans-US-FL-32905-0N46133F",
+	"availability":"2017-09-06T18:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "0N46133F",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>SATA POWER 6 inches inch 4-pin Molex to Straight 15 pin SATA Power adapter</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/6/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>18:17:04</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>-10.95</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 2530 Ersoff Blvd NE, Palm Bay, FL, 32905-3328, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>0N46133F</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			920137.3865609372,
+			-5557692.62182625,
+			2980963.496529646
+		]
+	}
+},{
+	"id":"czm-trans-US-FL-32905-0NL4593E",
+	"availability":"2017-09-05T17:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "0NL4593E",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>SATA POWER 6 inches inch 4-pin Molex to Straight 15 pin SATA Power adapter</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/5/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>17:17:04</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>37.95</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 2420 Ersoff Blvd NE, Palm Bay, FL, 32905-3328, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>0NL4593E</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			920088.7384597822,
+			-5557713.963769737,
+			2980938.8882591194
+		]
+	}
+},{
+	"id":"czm-trans-US-FL-32905-0N346133D",
+	"availability":"2017-09-04T16:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "0N346133D",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>SATA POWER 6 inches inch 4-pin Molex to Straight 15 pin SATA Power adapter</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/4/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>16:17:04</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>18</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 2340 Ersoff Blvd NE, Palm Bay, FL, 32905-3328, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>0N346133D</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			919831.0172423973,
+			-5557757.347343512,
+			2980937.5482999957
+		]
+	}
+},{
+	"id":"czm-trans-US-FL-32905-0NL46133C",
+	"availability":"2017-09-03T15:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "0NL46133C",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>SATA POWER 6 inches inch 4-pin Molex to Straight 15 pin SATA Power adapter</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/3/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>15:17:04</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>15</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 2320 Ersoff Blvd NE, Palm Bay, FL, 32905-3328, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>0NL46133C</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			919801.1953343237,
+			-5557762.018840953,
+			2980938.037336191
+		]
+	}
+},{
+	"id":"czm-trans-US-FL-32905-0NL45133B",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "0NL45133B",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>SATA POWER 6 inches inch 4-pin Molex to Straight 15 pin SATA Power adapter</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/2/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>14:17:04</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>10</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 2330 Ersoff Blvd NE, Palm Bay, FL, 32905-3328, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>0NL45133B</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			919816.0365217243,
+			-5557759.562626561,
+			2980938.037336191
+		]
+	}
+},{
+	"id":"czm-trans-US-FL-32905-1L523H",
+	"availability":"2017-09-15T20:02:01.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "1L523H",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>4 Sata Data Cables, Fire Red, 29 inches/700mm long With Metal Clips</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/15/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>20:02:01</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>-3.3</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 2540 Ersoff Blvd NE, Palm Bay, FL, 32905-3328, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>1L523H</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			920137.3865609372,
+			-5557692.62182625,
+			2980963.496529646
+		]
+	}
+}]

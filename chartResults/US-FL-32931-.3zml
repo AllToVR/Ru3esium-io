@@ -1,0 +1,136 @@
+[{
+	"id":"document",
+	"version":"1.0"
+},{
+	"id":"czm-vsub-US-FL-32931",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"home": "true",
+	"position":{
+		"cartographicDegrees":[
+			-80.621591,28.3150144,50
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"10pt Segoe UI Semibold",
+		"fillColor": {"rgba":[255,255,255,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"32931"
+          }
+         ]
+	}
+},{
+	"id":"three-Lbl-US-FL-32931",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"position":{
+		"cartesian":[
+		-100,
+		200,
+		0
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"16pt Segoe UI Semibold",
+		"fillColor": {"rgba":[200,200,200,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"32931"
+          }
+         ]
+     }
+   },{
+	"id":"three-poly-US-FL-32931-gross",
+    "name" : "Stage 1 Altitude",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "polyline" : {
+        "positions" : {
+			"cartesian":[
+0,0,1,92.555448258163,-225.29644268774703,1,412.36382644802126,-329.64426877470356,1,500,-98.4,1
+			]
+        },
+    "transId" : [
+"5X5226486745C","5X5745D"
+    ],
+        "material" : {
+            "solidColor" : {
+                "color" : {"rgba" : [0,255,0,255]}
+            }
+        },
+        "width" : 3
+    }
+  },{
+	"id":"three-last-US-FL-32931-gross",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[5,-0.9840000000000001,0.01]
+
+    },
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"1pt Segoe UI Semibold",
+		"fillColor": {"rgba":[0,255,0,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"-$49.20"
+          }
+         ]
+     }
+  },{
+	"id":"three-trans-US-FL-32931-5X5226486745C",
+    "transId" : "5X5226486745C",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[0.92555448258163,-2.2529644268774702,0.01]
+
+    }
+  },{
+	"id":"three-trans-US-FL-32931-5X5745D",
+    "transId" : "5X5745D",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[4.1236382644802125,-3.2964426877470356,0.01]
+
+    }
+  },{
+	"id":"czm-trans-US-FL-32931-5X5226486745C",
+	"availability":"2017-09-07T19:18:33.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "5X5226486745C",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>SATA 8 inches inch 90 Degree Power adapter, 4 pin molex to 90*(degree) 15 pin SATA</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/7/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>19:18:33</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>-9.6</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 8 N. Brevard Ave., Cocoa Beach,FL,32931, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>5X5226486745C</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			916627.0139753422,
+			-5543762.216256767,
+			3007683.5652845777
+		]
+	}
+},{
+	"id":"czm-trans-US-FL-32931-5X5745D",
+	"availability":"2017-09-25T19:18:33.000Z/2017-09-30T17:41:20.000Z",
+    "transId" : "5X5745D",
+	"description" : "<table class='summaryTable'><tr><td  colspan=2 style='padding:2px;font-size:13px;'>SATA 8 inches inch 90 Degree Power adapter, 4 pin molex to 90*(degree) 15 pin SATA</td></tr><tr><td colspan=2><hr></td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Date</td><td>9/25/2017</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Time</td><td>19:18:33</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Gross</td><td>-39.6</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>Address</td><td>Some Customer, 8 N. Brevard Ave., Cocoa Beach,FL,32931, US</td></tr><tr><td style='background-color:red;padding:2px;font-size:13px;float:right'>ID</td><td>5X5745D</td></tr></table><hr>",
+	"name":"Some Customer",
+	"billboard" : {
+		"image":"balloon.png",
+ 	    "scale" : 0.15
+	 },
+	"position":{
+		"cartesian":[
+			916627.0139753422,
+			-5543762.216256767,
+			3007683.5652845777
+		]
+	}
+}]

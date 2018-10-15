@@ -1,0 +1,116 @@
+[{
+	"id":"document",
+	"version":"1.0"
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-FL--", "scope":"shared"},
+	"source":"US---",
+	"position":{
+		"cartesian":[
+		0,
+		100,
+		0
+		]
+	}
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-GA--", "scope":"shared"},
+	"source":"US---",
+	"position":{
+		"cartesian":[
+		0,
+		100,
+		0
+		]
+	}
+},{
+	"id":"ext-THREE.JS",
+	"external":{"eventSource":"US-Il--", "scope":"shared"},
+	"source":"US---",
+	"position":{
+		"cartesian":[
+		0,
+		100,
+		0
+		]
+	}
+},{
+	"id":"czm-cat-US--",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"home": "true",
+	"position":{
+		"cartographicDegrees":[
+			-78.60266,27.747386,50
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"14pt Segoe UI Semibold",
+		"fillColor": {"rgba":[255,255,255,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"United States"
+          }
+         ]
+	}
+},{
+	"id":"three-Lbl-US--",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+	"position":{
+		"cartesian":[
+		-100,
+		200,
+		0
+		]
+	},
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"16pt Segoe UI Semibold",
+		"fillColor": {"rgba":[200,200,200,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"United States"
+          }
+         ]
+     }
+   },{
+	"id":"three-poly-US---gross",
+    "name" : "Stage 1 Altitude",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "polyline" : {
+        "positions" : {
+			"cartesian":[
+0,0,1,0,208.27814569536423,1,18.507429293394576,220.6953642384106,1,37.01485858678915,235.5960264900662,1,55.522287880183725,267.0115894039735,1,74.0297171735783,257.94701986754967,1,92.555448258163,250,1,111.34398483871392,245.19867549668874,1,129.8514141321085,258.27814569536423,1,148.35884342550307,275.49668874172187,1,218.68707474040247,288.57615894039736,1,235.22880940473524,285.84437086092714,1,412.36382644802126,253.06291390728478,1,500,353.0629139072847,1,500.74029717173573,453.0629139072848,1,500,611.4,1
+			]
+        },
+        "material" : {
+            "solidColor" : {
+                "color" : {"rgba" : [0,255,0,255]}
+            }
+        },
+        "width" : 3
+    }
+  },{
+	"id":"three-last-US---gross",
+	"availability":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+    "position" : {
+			"cartesian":[5,6.114,0.01]
+
+    },
+	"label":{
+		"style":"FILL_AND_OUTLINE",
+		"font":"1pt Segoe UI Semibold",
+		"fillColor": {"rgba":[0,255,0,255]},
+		"horizontalOrigin": "LEFT",
+		"text":[
+          {
+          "interval":"2017-09-02T14:17:04.000Z/2017-09-30T17:41:20.000Z",
+          "string":"$305.70"
+          }
+         ]
+     }
+  }]
