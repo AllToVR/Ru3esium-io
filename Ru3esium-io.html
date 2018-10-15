@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <meta name="description" content="An interactive system useing CesiumJS and THREEjs.">
+  <title>Interactive CesiumJS/THREEjs with socket.io</title>
+	<script src="http://mib.alltovr.com/socket.io/socket.io.js"></script>
+	<script src="http://mib.alltovr.com/Build/Cesium/Cesium.js"></script>
+	<script src="http://mib.alltovr.com/build/three.min.js"></script>
+	<script src="http://mib.alltovr.com/apps/gittest/layoutmgr.js"></script>
+	<script src="http://mib.alltovr.com/csj/trackball.js"></script>
+<style>
+
+
+@import url(http://mib.alltovr.com/Build/Cesium/Widgets/widgets.css);
+html {
+    height: 100%;
+}
+body {
+    background: #000;
+    color: #eee;
+    font-family: sans-serif;
+    font-size: 9pt;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.fullSize2 {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    width: 40%;
+    height: 50%;
+}
+.fullSize3 {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+#toolbar {
+	position: absolute;
+	top:0;
+	left:0;
+	background: rgba(42, 42, 42, 0.8);
+	border-radius: 4px;
+ 	margin: 5px;
+ 	padding: 2px 5px;
+}
+#toolbar input {
+	vertical-align: middle;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+#LoadingOverlay {
+	position: absolute;
+	top: 0;
+	left: 50%;
+}
+#LoadingOverlay h1 {
+	text-align: center;
+	position: relative;
+	top: 50%;
+}
+</style>
+</head>
+
+<body>
+<div id="LoadingOverlay"></div>
+<div id="ThreeContainer" class="fullSize3"></div>
+<div id="cesiumContainer" class="fullSize2"></div>
+<div id="toolbar"></div>
+
+<script>
+//
+var socket = io('http://mib.alltovr.com', { path: '/socket.io'})
+//
+socket.on('doneCZML', function( dataIn, fileName){
+	console.log('doneCZML1 = ' + fileName)
+	download(dataIn, fileName, '3zml')
+});
+//Function to download data to a file
+function download(data, filename, type) {
+var file = new Blob([data.my], { type: 'text/plain' })
+	if (window.navigator.msSaveOrOpenBlob){ // IE10+
+		window.navigator.msSaveOrOpenBlob(file, filename);
+	}else{ // Others
+		console.log('doneCZML2 = ' + filename)
+		var a = document.createElement("a"),
+		url = window.URL.createObjectURL(file);
+		a.href = url;
+		a.download = filename;
+		a.target = "_blank";
+		document.body.appendChild(a);
+		a.click();
+		setTimeout(function() {
+			document.body.removeChild(a);
+			window.URL.revokeObjectURL(url);  
+		}, 3000); 
+	}
+}
+//
+Cesium.BingMapsApi.defaultKey = '7w7YGKkN5fkrZ99DnhUj~LCB3kYH8zSqst_XZnOpwzg~AmTygt3wYi9eECs_OZBV0I958mbhsI15ClfBUe_kVp4Ol_XqaKRYAsJ1VW5ZVRau'
+var aazm = createDate( 'September 1, 2017 00:00:00.000')
+//
+var minWGS84 = [-81.6, 26.0]
+var maxWGS84 = [-79.6, 31.0]
+var geocoder
+var font
+var viewer
+var cScene
+var clock
+var camera
+//
+var three = {
+    renderer: null,
+    camera: null,
+    scene: null,
+    clock: null,
+    controls: null
+  };
+three.clock = new THREE.Clock();
+//
+var UnivChartConfig = {
+	chartOffset: 0.5,
+	longitude: -78.60266,
+	latitude: 27.747386,
+	altitude: 50,
+	type: 'main-all',
+	aaxm: 'aaxm',
+	aazm: 'aazm',
+	category: '',
+	startingPoint: {x:0, y:0, z:0},
+	presentPoint: {x:0, y:0, z:0}
+}
+var layOutMgr = new layoutmgr(UnivChartConfig)
+var layOutMgrList = {'main':{'mgr':layOutMgr}}
+
+var chart = {}
+var pickableObjs = []
+var selectedTrans = []
+var dataSources = {}
+var docHdr = {}
+var vsubData = {}
+var vsubDataCnt = 0
+var transData = {}
+var transDataCnt = 0
+var subData = {}
+var subDataCnt = 0
+var catData = {}
+var catDataCnt = 0
+var mainDataCnt = 0
+var mainData = {'main':[]}
+var material = new THREE.MeshBasicMaterial( {color: 0xB0B0B0, wireframe: false} )
+var material1 = new THREE.MeshBasicMaterial( {color: 0xff0000, wireframe: false} )
+var material2 = new THREE.MeshBasicMaterial( {color: 0xffff00, wireframe: false} )
+var material3 = new THREE.MeshBasicMaterial( {color: 0xff00ff, wireframe: false} )
+var material5 = new THREE.MeshBasicMaterial( {color: 0x00ff00, wireframe: false} )
+var materialWhite = new THREE.MeshBasicMaterial( {color: 0xffffff, wireframe: false} )
+var loadSampleCnt = 0
+var czmlToMake = []
+var myVar = undefined
+var czmlLoading = false
+//
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ 
+window.onbeforeunload= function(){
+//	console.log('cleanup() on reload')
+//	clearThreeScene()
+}
+//
+function clearThreeScene(){
+//	OverlayContainer.innerHTML = 'Unloading'
+}
+//
+function handleIt(){
+	var fileInputIt = document.getElementById('fileInput')
+	loadSampleCnt = fileInputIt.files.length - 1
+	document.getElementById("loadHdr").innerHTML = fileInputIt.files.length + ' items remaining'
+	for (var i = 0; i < fileInputIt.files.length; i++) {
+ 		var newDiv = document.createElement('div')
+ 		var newH1 = document.createElement('h1')
+ 		newDiv.appendChild( newH1)
+ 		newH1.id = fileInputIt.files[i].name
+ 		newH1.innerHTML = fileInputIt.files[i].name
+ 		document.getElementById("LoadingOverlay").appendChild( newDiv)
+ 	}
+	//
+	//
+	for (var i = 0; i < fileInputIt.files.length; i++) {
+		var file = fileInputIt.files[i]
+		if( file){
+			doReader( file, file.name)
+			if( myVar === undefined){
+				myVar = setInterval(czmlLoadTimer, 1000)
+			}
+		}
+	}
+}
+
+function czmlLoadTimer() {
+    var d = new Date();
+    var t = d.toLocaleTimeString();
+ 	if( czmlToMake.length === 0){
+ 		clearInterval(myVar)
+ 		loadSampleCnt = 0
+ 		myVar = undefined
+		var element = document.getElementById('loadHdr')
+	    element.parentNode.removeChild(element)
+
+ 		document.getElementById("LoadingOverlay").innerHTML = ''
+ 		var newDiv = document.createElement('div')
+ 		var newH1 = document.createElement('h1')
+ 		newDiv.appendChild( newH1)
+ 		newH1.id = 'loadHdr'
+ 		document.getElementById("LoadingOverlay").appendChild( newDiv)
+ 		document.getElementById("LoadingOverlay").style.display = 'none'
+ 	}else{
+		if( czmlLoading !== true){
+		     document.getElementById("loadHdr").innerHTML = loadSampleCnt + ' items remaining'
+			czmlLoading = true
+	 		var nextItem = czmlToMake[0]
+			new makeCZML( nextItem.results, nextItem.id, nextItem.sep)
+			czmlToMake.shift()
+		}
+	}
+}
+//////////////////////////////////////////////////////////////
+function doReader( file, name) {
+	var reader = new FileReader();
+	reader.onload = function(e) {
+		var nnnnn = file.name.split('.')
+	 	var readerResults = JSON.parse(reader.result)
+		czmlToMake[ czmlToMake.length] = {results:readerResults, id:file.name, sep: '.'}
+	}
+	reader.readAsText( file)	
+}
+//
+function makeCZML( results, inName, sep){
+	var nnnnn = inName.split(sep)
+	docHdr = {}
+	vsubData = {}
+	vsubDataCnt = 0
+	transData = {}
+	transDataCnt = 0
+	subData = {}
+	subDataCnt = 0
+	catData = {}
+	catDataCnt = 0
+	mainDataCnt = 0
+	mainData = {'main':[]}
+   	var chartOffset4 = 0.05
+   	var chartOffset4Inc = 0.1
+   	var catOffset = 50
+   	var catOffsetInc = -50
+   	var subOffset = 50
+   	var subOffsetInc = -50
+   	var vsubOffset = 0
+   	var vsubOffsetInc = 180
+   	var geometry = new THREE.PlaneGeometry( 1, 1, 1, 1 )
+	var position = ''
+ 	var source = nnnnn[0]
+	const sysType      = 0
+	const subType      = 1
+	const category     = 2
+	const subCategory  = 3
+	const vsubCategory = 4
+	const vsubTransId  = 5
+	  Object.keys( results).forEach(function(fkey, idx) {
+		  var item = results[fkey]
+		  if( item.id === 'document'){
+				docHdr = item
+				mainData[ 'main'] = [docHdr]
+		  }else{
+			  if( item.id !== ''){
+				  var itemId = item.id.split('-')
+					if( itemId[ sysType] === 'three'){
+						// Create cat
+						if( layOutMgrList[ itemId[ category]] === undefined){
+							catOffset = subOffset + catOffsetInc
+							subOffset = catOffset - catOffsetInc
+							vsubOffset = 0
+							var pointsToUse = item.position.cartesian
+						
+							var newPlane = new THREE.Mesh( geometry, material2 )
+							newPlane.position.x = vsubOffset
+							newPlane.position.y = catOffset
+							newPlane.position.z = 500
+							newPlane.scale.x = 20
+							newPlane.scale.y = 20
+							newPlane.scale.z = 20
+							newPlane.userData = {home: true, id: [ itemId[ category]]}
+							var sentObj = new THREE.Object3D()
+							sentObj.add( newPlane)
+							three.scene.add( sentObj )
+							pickableObjs.push( newPlane)
+							//
+							var cccc = layOutMgrList[ 'main']['mgr'].getOffset2(itemId[ category])
+							var p = layOutMgrList[ 'main']['mgr'].getNextSpot('behind')
+							var prevOffset = layOutMgrList[ 'main']['mgr'].getOffset()
+							var UnivChartConfig = {
+								chartOffset: 0.5,
+								longitude: -78.60266,
+								latitude: 27.747386,
+								altitude: 50,
+								type: 'main-all',
+								aaxm: 'aaxm',
+								aazm: 'aazm',
+								category: '',
+								name: itemId[ category],
+								startingPoint: p,
+								presentPoint: {x:0, y:0, z:catOffset}
+							}
+							var spot = new Cesium.Cartesian3(newPlane.position.x, newPlane.position.y, newPlane.position.z)
+							var layOutMgr = new layoutmgr(UnivChartConfig)
+							layOutMgrList[ itemId[ category]] = {}
+							layOutMgrList[ itemId[ category]]['mgr'] = layOutMgr
+							//
+							chart[ itemId[ category]] = {}
+							chart[ itemId[ category]][ 'plane'] = newPlane
+							chart[ itemId[ category]][ 'home'] = true
+							chart[ itemId[ category]][ 'obj'] = []
+							chart[ itemId[ category]][ 'trans'] = []
+							chart[ itemId[ category]][ 'transs'] = []
+							chart[ itemId[ category]][ 'transsId'] = []
+							chart[ itemId[ category]][ 'transsNo'] = []
+							chart[ itemId[ category]][ 'pos'] = {
+								top:  0.5,
+								left: chartOffset4,
+								depth: 0.99,
+								period: 5,
+								position: spot
+							}
+							//
+							layOutMgrList[ itemId[ category]]['mgr'].addItem( chart[ itemId[ category]], 'behind', itemId[ category])
+						}
+						// Create sub
+						if( itemId[ subCategory] !== ''){
+							if( layOutMgrList[ itemId[ category]][ itemId[ subCategory]] === undefined){
+								subOffset += subOffsetInc
+								vsubOffset = vsubOffsetInc
+								var pointsToUse = item.position.cartesian
+							
+								var newPlane = new THREE.Mesh( geometry, material1 )
+								newPlane.position.x = vsubOffset
+								newPlane.position.y = catOffset
+								newPlane.position.z = 500
+								newPlane.scale.x = 20
+								newPlane.scale.y = 20
+								newPlane.scale.z = 20
+								newPlane.userData = {home: true, id: [ itemId[ category], itemId[ subCategory]]}
+								var sentObj = new THREE.Object3D()
+								sentObj.add( newPlane)
+								three.scene.add( sentObj )
+								pickableObjs.push( newPlane)
+								var cccc = layOutMgrList[ 'main']['mgr'].getOffset2(itemId[ category])
+								var p = layOutMgrList[ itemId[ category]]['mgr'].getNextSpot('right')
+								var prevOffset = layOutMgrList[ 'main']['mgr'].getOffset()
+								var UnivChartConfig = {
+									chartOffset: 0.5,
+									longitude: -78.60266,
+									latitude: 27.747386,
+									altitude: 50,
+									type: 'main-all',
+									aaxm: 'aaxm',
+									aazm: 'aazm',
+									category: '',
+									name: itemId[ category],
+									startingPoint: p,
+									presentPoint: {x:0, y:0, z:catOffset}
+								}
+								var spot = new Cesium.Cartesian3(newPlane.position.x, newPlane.position.y, newPlane.position.z)
+								var layOutMgr = new layoutmgr(UnivChartConfig)
+								layOutMgrList[ itemId[ category]][ itemId[ subCategory]] = {}
+								layOutMgrList[ itemId[ category]][ itemId[ subCategory]]['mgr'] = layOutMgr
+								//
+								chart[ itemId[ category]][ itemId[ subCategory]] = {}
+								chart[ itemId[ category]][ itemId[ subCategory]][ 'plane'] = newPlane
+								chart[ itemId[ category]][ itemId[ subCategory]][ 'home'] = true
+								chart[ itemId[ category]][ itemId[ subCategory]][ 'obj'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ 'trans'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ 'transs'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ 'transsId'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ 'transsNo'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ 'pos'] = {
+									top:  0.5,
+									left: chartOffset4,
+									depth: 0.99,
+									period: 5,
+									position: spot
+								}
+								//
+								layOutMgrList[ itemId[ category]]['mgr'].addItem( chart[ itemId[ category]][ itemId[ subCategory]], 'right', itemId[ category])
+							}
+						}
+						// Create vsub
+						if( itemId[ vsubCategory] !== ''){
+							if( layOutMgrList[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]] === undefined){
+								vsubOffset += vsubOffsetInc
+								var pointsToUse = item.position.cartesian // This is ignored; we are useing the layoutMgr position
+								// Create plane for the vsub item
+								var newPlane = new THREE.Mesh( geometry, material5 )
+								newPlane.position.x = vsubOffset
+								newPlane.position.y = catOffset
+								newPlane.position.z = 500
+								newPlane.scale.x = 20
+								newPlane.scale.y = 20
+								newPlane.scale.z = 20
+								newPlane.userData = {home: true, id: [ itemId[ category], itemId[ subCategory], itemId[ vsubCategory]]}
+								var sentObj = new THREE.Object3D()
+								sentObj.add( newPlane)
+								three.scene.add( sentObj )
+								pickableObjs.push( newPlane)
+								// Create a new layoutMgr for the new vsub item.
+								var cccc = layOutMgrList[ 'main']['mgr'].getOffset2(itemId[ category])
+								var p = layOutMgrList[ itemId[ category]][ itemId[ subCategory]]['mgr'].getNextSpot('below')
+								var prevOffset = layOutMgrList[ 'main']['mgr'].getOffset()
+								var UnivChartConfig = {
+									chartOffset: 0.5,
+									longitude: -78.60266,
+									latitude: 27.747386,
+									altitude: 50,
+									type: 'main-all',
+									aaxm: 'aaxm',
+									aazm: 'aazm',
+									category: '',
+									name: itemId[ category],
+									startingPoint: p,
+									presentPoint: {x:0, y:0, z:catOffset}
+								}
+								var spot = new Cesium.Cartesian3(newPlane.position.x, newPlane.position.y, newPlane.position.z)
+								var layOutMgr = new layoutmgr(UnivChartConfig)
+								layOutMgrList[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]] = {}
+								layOutMgrList[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]]['mgr'] = layOutMgr
+								// Create a reference to all the supporting info for the chart.
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]] = {}
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]][ 'plane'] = newPlane
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]][ 'home'] = true
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]][ 'obj'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]][ 'trans'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]][ 'transs'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]][ 'transsId'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]][ 'transsNo'] = []
+								chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]][ 'pos'] = {
+									top:  0.5,
+									left: chartOffset4,
+									depth: 0.99,
+									period: 5,
+									position: spot
+								}
+								//
+								layOutMgrList[ itemId[ category]][ itemId[ subCategory]]['mgr'].addItem( chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]], 'below', itemId[ category])
+							}
+						}
+						var chartToUse222
+						if( itemId[ vsubCategory] !== ''){
+							chartToUse222 = chart[ itemId[ category]][ itemId[ subCategory]][ itemId[ vsubCategory]]
+						}else{
+							if( itemId[ subCategory] !== ''){
+								chartToUse222 = chart[ itemId[ category]][ itemId[ subCategory]]
+							}else{
+								chartToUse222 = chart[ itemId[ category]]
+							}
+						}
+						if( itemId[ subType] === 'last'){
+							var text = item.label.text[0].string
+							var pos = item.position.cartesian
+							var hColor = item.label.fillColor.rgba
+							hhhColor = new THREE.Color( hColor[ 0]/255, hColor[ 1]/255, hColor[ 2]/255)
+							var chartToUse = chartToUse222
+							createText(text, {x:pos[0], y:pos[1], z:pos[2]}, chartToUse, chartToUse.obj, 0.2, hhhColor, chartToUse222)
+						}else{
+							if( itemId[ subType] === 'Lbl'){
+								var text = item.label.text[0].string
+								var hColor = item.label.fillColor.rgba
+								hhhColor = new THREE.Color( hColor[ 0]/255, hColor[ 1]/255, hColor[ 2]/255)
+								var chartToUse = chartToUse222
+								createText(text, new Cesium.Cartesian3(-2, 0, 0), chartToUse, chartToUse.obj, 0.4, hhhColor, chartToUse222)
+							}else{
+								if( itemId[ subType] === 'poly'){
+									var transToUse = []
+									if( item.polyline.transId !== undefined){
+										transToUse = item.polyline.transId
+									}
+									var pointsToUse = item.polyline.positions.cartesian
+									var hhh = {sentPoints: pointsToUse}
+									var hColor = item.polyline.material.solidColor.color.rgba
+									hhhColor = new THREE.Color( hColor[ 0]/255, hColor[ 1]/255, hColor[ 2]/255)
+									var bbb2 = itemId
+									var chartToUse = chartToUse222
+									var done = makeSpline( hhh, chartToUse, hColor, chartToUse.obj, material3, transToUse, pickableObjs, bbb2, chartToUse222, {home: true, id: [ itemId[ category], bbb2[2], bbb2[3]]})
+								}else{
+								}
+							}
+						}
+					}else{
+						if( itemId[ sysType] === 'czm'){
+							if( itemId[ subType] === 'vsub'){
+								if( itemId[ vsubCategory] === undefined || itemId[ vsubCategory] === ''){
+									mainData[ 'main'].push(item)
+									mainDataCnt++
+								}else{
+									if( vsubData[itemId[ vsubCategory]] === undefined){
+										vsubData[ itemId[ vsubCategory]] = [docHdr]
+									}
+									vsubData[ itemId[ vsubCategory]].push(item)
+									vsubDataCnt++
+								}
+							}else{
+								if( itemId[ subType] === 'sub'){
+									if( itemId[ subCategory] === undefined || itemId[ subCategory] === ''){
+										mainData[ 'main'].push(item)
+										mainDataCnt++
+									}else{
+										if( subData[itemId[ subCategory]] === undefined){
+											subData[ itemId[ subCategory]] = [docHdr]
+										}
+										subData[ itemId[ subCategory]].push(item)
+										subDataCnt++
+									}
+								}else{
+									if( itemId[ subType] === 'cat'){
+										if( itemId[ category] === undefined || itemId[ category] === ''){
+											mainData[ 'main'].push(item)
+											mainDataCnt++
+										}else{
+											if( catData[itemId[ category]] === undefined){
+												catData[ itemId[ category]] = [docHdr]
+											}
+											catData[ itemId[ category]].push(item)
+											catDataCnt++
+										}
+									}else{
+										if( itemId[ subType] === 'trans'){
+											if( transData['trans'] === undefined){
+													transData[ 'trans'] = [docHdr]
+											}
+											transData[ 'trans'].push(item)
+											transDataCnt++
+										}else{
+											if( mainData['main'].length === 0){
+												mainData[ 'main'] = [docHdr]
+											}
+											mainData[ 'main'].push(item)
+											mainDataCnt++
+										}
+									}
+								}
+							}
+						}else{
+							mainData[ 'main'].push(item)
+							mainDataCnt++
+						}
+					}
+			  }
+		  }
+	  })
+	  // End build
+		//
+		if( transDataCnt){
+			if( dataSources['trans'] === undefined){
+				var czmlDataSource2 = new Cesium.CzmlDataSource();
+				dataSources['trans'] = czmlDataSource2
+				viewer.dataSources.add(czmlDataSource2)
+			}
+			dataSources['trans'].process(transData['trans']).then(function() {
+//				console.log('loading trans Complete!')
+			})
+		}
+	  //
+	  if( vsubDataCnt){
+		  Object.keys( vsubData).forEach(function(fkey, idx) {
+				var czmlDataSource2 = new Cesium.CzmlDataSource();
+				dataSources[fkey] = czmlDataSource2
+				viewer.dataSources.add(czmlDataSource2);
+				czmlDataSource2.load(vsubData[fkey]).then(function() {
+				})
+			})
+	  }
+	  //
+	  if( subDataCnt > 0){
+		  Object.keys( subData).forEach(function(fkey, idx) {
+				var czmlDataSource2 = new Cesium.CzmlDataSource();
+				dataSources[fkey] = czmlDataSource2
+				viewer.dataSources.add(czmlDataSource2);
+				czmlDataSource2.load(subData[fkey]).then(function() {
+				})
+			})
+	  }
+	  //
+	  if( catDataCnt > 0){
+		  Object.keys( catData).forEach(function(fkey, idx) {
+				var czmlDataSource2 = new Cesium.CzmlDataSource();
+				dataSources[fkey] = czmlDataSource2
+				viewer.dataSources.add(czmlDataSource2);
+				czmlDataSource2.load(catData[fkey]).then(function() {
+				})
+			})
+	  }
+	  if( mainDataCnt > 0){
+		  Object.keys( mainData).forEach(function(fkey, idx) {
+			var czmlDataSource2 = new Cesium.CzmlDataSource();
+			 dataSources[fkey] = czmlDataSource2
+			viewer.dataSources.add(czmlDataSource2);
+		    czmlDataSource2.load(mainData[fkey]).then(function() {
+		    })
+		  })
+	  }
+	  czmlLoading = false
+	 	if( document.getElementById(inName) !== null){
+ 			var element = document.getElementById(inName)
+ 		    element.parentNode.removeChild(element)
+ 		    loadSampleCnt--
+	 	}
+	 }
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ 
+ //
+function makeSpline( sentencex, sentObj, hColor, objList, material, transToUse, pickableObjs, bbb2, chartToUse2a, userData){
+	var uuu2 = sentencex.sentPoints
+	var zzz = []
+	var points3D = new THREE.Geometry();
+	var geometry = new THREE.PlaneGeometry( 30, 30, 30, 30 )
+	var q = 0
+	for(var h=0; h< uuu2.length; h = h+3){
+		zzz[ q] = new THREE.Vector3(uuu2[h], uuu2[h+1], uuu2[h+2])
+		points3D.vertices.push( new THREE.Vector3(uuu2[h], uuu2[h+1], uuu2[h+2]))
+		q++
+	}
+	////////////////////////////
+	var line22 = new THREE.Line(points3D, new THREE.LineBasicMaterial({color: new THREE.Color( hColor[ 0]/255, hColor[ 1]/255, hColor[ 2]/255)}));
+	line22.position.set(0,0,0)
+	line22.scale.set(0.01, 0.01, 0.01)
+	line22.userData = userData
+	line22.userData.id = [ bbb2[2], bbb2[3], bbb2[4], transToUse]
+	chartToUse2a.plane.add(line22)
+	objList.push( line22)
+	////////////////////////////
+	var cnt = 0
+	if( transToUse !== undefined){
+		sentObj.trans  = transToUse
+		chartToUse2a.trans = transToUse
+	 	for(var h=0; h< uuu2.length; h = h+3){
+	    	var materialz = new THREE.MeshPhongMaterial( {
+		    	color: new THREE.Color( Math.random(), Math.random(), Math.random() ).getHex(),
+	        	side: THREE.DoubleSide
+	    		});
+			//
+			if( h>0){
+				if( transToUse[ cnt] !== undefined){
+					var newPlane22 = new THREE.Mesh( geometry, materialz )
+					var newId2 = transToUse[ cnt]
+					newPlane22.position.set(uuu2[h], uuu2[h+1], uuu2[h+2])
+	   				line22.add( newPlane22 )
+					newPlane22.userData.home = userData.home
+					var cntToUse = line22.children.length
+					var arrayToUse = [ bbb2[2], bbb2[3], bbb2[4], newId2, cntToUse]
+					newPlane22.userData.id = arrayToUse
+	 				chartToUse2a.transs.push(newPlane22)
+	 				chartToUse2a.transsNo.push(cntToUse)
+	 				chartToUse2a.transsId.push(transToUse[ cnt])
+				    pickableObjs.push( newPlane22)
+				}else{
+				}
+				cnt++
+			}
+		}
+		//
+	}else{
+	}
+  //
+	return 'Done'
+}
+//
+function loadFont() {
+	var loader = new THREE.FontLoader();
+	loader.load( 'http://mib.alltovr.com/fonts/helvetiker_bold.typeface.json', 
+		function ( response ) {
+			font = response;
+		}, 
+		// Function called when download progresses
+		function ( xhr ) {
+			console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+		},
+		// Function called when download errors
+		function ( xhr ) {
+			console.log( 'A Font error happened');
+		}
+	);
+}
+//
+function createText(text, pos, sentObj, objList, sizeIn, color, chartToUse2) {
+	var material = new THREE.MeshBasicMaterial({
+	  color: color,
+	  opacity: 0.0
+	});
+	textGeo = new THREE.TextGeometry( text, {
+	font: font,
+    size: sizeIn,
+    height: 0.01,
+    curveSegments: 12,
+	});
+
+	textGeo.computeBoundingBox();
+	textGeo.computeVertexNormals();
+
+	var height = 1
+	var size = 1
+	var hover = 3
+
+	var bevelEnabled = true
+	if ( ! bevelEnabled ) {
+		var triangleAreaHeuristics = 0.1 * ( height * size );
+		for ( var i = 0; i < textGeo.faces.length; i ++ ) {
+			var face = textGeo.faces[ i ];
+			if ( face.materialIndex == 1 ) {
+				for ( var j = 0; j < face.vertexNormals.length; j ++ ) {
+					face.vertexNormals[ j ].z = 0;
+					face.vertexNormals[ j ].normalize();
+				}
+				var va = textGeo.vertices[ face.a ];
+				var vb = textGeo.vertices[ face.b ];
+				var vc = textGeo.vertices[ face.c ];
+
+				var s = THREE.GeometryUtils.triangleArea( va, vb, vc );
+				if ( s > triangleAreaHeuristics ) {
+					for ( var j = 0; j < face.vertexNormals.length; j ++ ) {
+						face.vertexNormals[ j ].copy( face.normal );
+					}
+				}
+			}
+		}
+	}
+
+	var centerOffset = -0.5 * ( textGeo.boundingBox.max.x - textGeo.boundingBox.min.x );
+	textMesh1 = new THREE.Mesh( textGeo, material );
+	textMesh1.position.x = pos.x
+	textMesh1.position.y = pos.y
+	textMesh1.position.z = pos.z
+	textMesh1.rotation.y = Math.PI * 4;
+	sentObj.plane.add( textMesh1 )
+	objList.push( textMesh1)
+}
+//
+loadFont()
+//
+//
+window.onload = function(){  
+	//
+	var ThreeContainer = document.getElementById("ThreeContainer")
+	var OverlayContainer = document.getElementById("LoadingOverlay")
+	//
+	document.addEventListener( 'mousedown', onDocumentMouseClick, false );
+	window.addEventListener( 'resize', onWindowResize, false );
+	//
+	viewer = new Cesium.Viewer('cesiumContainer', {baseLayerPicker:false, sceneModePicker:false, homeButton:false, geocoder:false})
+	cScene = viewer.scene
+	clock = viewer.clock
+	camera = viewer.camera
+	//
+	var menu = document.createElement('select');
+	menu.className = 'cesium-button';
+	menu.id = 'amountOpt'
+	document.getElementById('toolbar').appendChild(menu)
+	//
+	var menuOpt = [{
+		text : 'Choose Options',
+		onselect : function() {
+		}
+	}, { 
+		text : 'Load local Reports',
+		onselect : function() {
+			document.getElementById('fileInput').setAttribute("onchange", "javascript:handleIt()")
+			document.getElementById('fileInput').setAttribute("accept", ".3zml")
+			document.getElementById('fileInput').click()
+			menu.selectedIndex = 0
+		}
+	}, {
+		text : 'Download Sample Data files',
+		onselect : function() {
+			socket.emit( 'sendSampleZip')
+			menu.selectedIndex = 0
+		}
+	}]
+	menu.onclick = function() {
+	   var item = menuOpt[menu.selectedIndex];
+	   if (item && typeof item.onselect === 'function') {
+	       item.onselect();
+	   }
+	}
+	for (var i = 0, len = menuOpt.length; i < len; ++i) {
+		var option = document.createElement('option');
+		option.textContent = menuOpt[i].text;
+		option.value = menuOpt[i].value;
+		menu.appendChild(option);
+	}
+	//
+	var newDiv = document.createElement('div')
+		var newH1 = document.createElement('h1')
+		newDiv.appendChild( newH1)
+		newH1.id = 'loadHdr'
+		newH1.innerHTML = loadSampleCnt + ' items remaining';
+		document.getElementById("LoadingOverlay").appendChild( newDiv)
+	//
+	//
+	var x = document.createElement("INPUT");
+	x.setAttribute("type", "file");
+	x.setAttribute("id", 'fileInput');
+	x.setAttribute("multiple", '');//action="javascript:handleIt()">accept=".jpg,
+	x.setAttribute("onchange", "javascript:handleIt()")
+	x.setAttribute("accept", ".czml")
+	x.style.display = 'none'
+	document.getElementById('toolbar').appendChild(x);
+  //
+	//
+	var center = Cesium.Cartesian3.fromDegrees(
+    (minWGS84[0] + maxWGS84[0]) / 2,
+    ((minWGS84[1] + maxWGS84[1]) / 2)-1,
+    250000
+  );
+		    
+	viewer.camera.flyTo({
+    destination : center,
+    orientation : {
+      heading : Cesium.Math.toRadians(0),
+      pitch : Cesium.Math.toRadians(-75),
+      roll : Cesium.Math.toRadians(0)
+    },
+    duration: 3
+  });
+	//
+	//	initTHREE()
+    var fov = 115
+    var width = window.innerWidth
+    var height = window.innerHeight
+    var aspect = width / height
+    var near = 1;
+    var far = 10*1000*1000;
+
+    three.scene = new THREE.Scene()
+ 	three.scene.matrixAutoUpdate = true;
+    three.camera = new THREE.PerspectiveCamera(fov, aspect, near, far)
+    three.camera.position.set( 0, 0, 50)
+	three.camera.updateProjectionMatrix()
+ 		
+    three.renderer = new THREE.WebGLRenderer({alpha: true, antialias: true})
+    three.renderer.setSize( width, height)
+
+    ThreeContainer.appendChild(three.renderer.domElement)
+   	var raycaster =  new THREE.Raycaster();                                        
+   	var pickList = ''
+   	three.controls = new THREE.TrackballControls( three.camera, three.renderer.domElement, pickList, raycaster );
+    three.controls.rotateSpeed = 1.0;
+    three.controls.zoomSpeed = 1.2;
+    three.controls.panSpeed = 2.2;
+    three.controls.noZoom = false;
+    three.controls.noPan = false;
+   	three.controls.staticMoving = true;
+   	three.controls.dynamicDampingFactor = 0.3;
+	three.controls.target.set( 0, 0, 0)
+	three.controls.setPickList( pickableObjs)
+
+   	var light = new THREE.DirectionalLight( 0xffffff );
+   	light.position.set( 1, 1, 1 );
+   	three.scene.add( light );
+   		
+   	light = new THREE.DirectionalLight( 0x002288 );
+   	light.position.set( -1, -1, -1 );
+   	three.scene.add( light );
+   		
+   	light = new THREE.AmbientLight( 0x222222 );
+   	three.scene.add( light );
+   			
+   	light = new THREE.PointLight( 0xffffff )
+   	three.scene.add( light )
+   	
+   	light = new THREE.DirectionalLight( 0x111111 )
+   	light.position.x = 10;
+   	three.scene.add( light )
+   	//
+	var handler = new Cesium.ScreenSpaceEventHandler(cScene.canvas)
+	//
+	handler.setInputAction(function(click) {
+		handler.enableZoom = false
+		var pickedObject = cScene.pick(click.position)
+	     if(Cesium.defined(pickedObject)){
+	     	var hhh = pickedObject.id.id.split('-')
+		  	console.log('RIGHT pickedObject.hhh = ' + hhh)
+		}else{
+			console.log('No RIGHT pickedObject.id.id')
+		}
+		  console.log('NO    RIGHT pickedObject.hhh = ')
+	}, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
+	
+	//
+	handler.setInputAction(function(click) {
+		handler.enableZoom = false
+		var pickedObject = cScene.pick(click.position)
+    	if(Cesium.defined(pickedObject)){
+	 	 	console.log('NO    LEFT pickedObject.hhh = ' + pickedObject.id.id)
+			var wai = {
+	 	  		cat: 'US',
+	 	  		sub: 'FL',
+	 	  		vsub: ''
+	 	  	}
+	     	var hhh = pickedObject.id.id.split('-')
+	       	if( hhh[0] === 'czm'){
+	      		useName = pickedObject.id.id.split('-')
+				if( useName[2] !== undefined){
+		  		    wai.cat = useName[2]
+		  		    wai.sub = useName[3]
+		  		    wai.vsub = useName[4]
+				}
+				if( useName[ 1] === 'trans'){
+					var jjj = pickedObject.id
+					var startPos = layOutMgrList[ wai.cat][ wai.sub][ useName[ 4]]['mgr'].getStartPres()
+					three.camera.position.set(startPos.startingPoint.x, startPos.startingPoint.y, 125)
+					three.controls.target.set(startPos.startingPoint.x, startPos.startingPoint.y, startPos.startingPoint.z)
+					var newchart = chart[ wai.cat][ wai.sub][ useName[ 4]]
+					for(var r=0; r< newchart.transs.length; r++){
+					  if( useName[ 5] === newchart.transsId[ r]){
+						  if( selectedTrans.length > 0){
+								if( selectedTrans[ 4] !== undefined){
+								  	selectedTrans[6].material =  selectedTrans[5]
+							 	 	selectedTrans[6].scale.set(1,1,1)
+								}
+						  }
+						  selectedTrans = [wai.cat,wai.sub,useName[ 4],newchart.transsNo[ r],useName[5],newchart.transs[ r].material,newchart.transs[ r]]
+						  t = newchart.transs.length
+						  newchart.transs[ r].scale.set(3,3,3)
+						  newchart.transs[ r].material = materialWhite
+						}
+					}
+				}else{
+	 		      	if( useName[1] === 'vsub'){
+						var startPos = layOutMgrList[ wai.cat][ wai.sub][ useName[ 4]]['mgr'].getStartPres()
+						three.camera.position.set(startPos.startingPoint.x, startPos.startingPoint.y, 125)
+						three.controls.target.set(startPos.startingPoint.x, startPos.startingPoint.y, startPos.startingPoint.z)
+	 		      	}else{
+		  		      	if( useName[1] === 'sub'){
+							var startPos = layOutMgrList[ wai.cat][ wai.sub]['mgr'].getStartPres()
+							three.camera.position.set(startPos.startingPoint.x, startPos.startingPoint.y, 125)
+							three.controls.target.set(startPos.startingPoint.x, startPos.startingPoint.y, startPos.startingPoint.z)
+		  		      	}else{
+			  		      	if( useName[1] === 'cat'){
+								var startPos = layOutMgrList[ wai.cat]['mgr'].getStartPres()
+								three.camera.position.set(startPos.startingPoint.x, startPos.startingPoint.y, 125)
+								three.controls.target.set(startPos.startingPoint.x, startPos.startingPoint.y, startPos.startingPoint.z)
+			  		      	}else{
+			  		      	}
+		  		      	}
+	 		      	}
+	     		}
+	     	}else{
+	     		console.log( 'data not cml----- ', pickedObject.id.id)
+		    }
+		}else{
+	    	console.log('No pickedObject.id.id')
+		}
+	}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+	//
+}
+//
+function onDocumentMouseClick( event ) {
+	if( three.controls.pickList.length > 0){
+		var usedMaterial = new THREE.MeshBasicMaterial( { color: 'lightgreen', opacity: 1, wireframe: false } )
+    	var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,   
+                                    	-( (event.clientY - window.innerHeight * -0.005)/ window.innerHeight ) * 2 + 1,  
+                                    	0.5 );     
+            
+		var raycaster =  new THREE.Raycaster();                                        
+		raycaster.setFromCamera( mouse3D, three.camera );
+		
+		var intersects = raycaster.intersectObjects( three.controls.pickList );
+		if ( intersects.length > 0 ) {
+		     var objId = intersects[0].object.userData.id
+			  if( selectedTrans.length > 0){
+				  selectedTrans[6].material =  selectedTrans[5]
+				  if( selectedTrans[ 4] !== undefined){
+					  selectedTrans[6].scale.set(1,1,1)
+				  }
+			  }
+			  selectedTrans = [objId[0],objId[1],objId[2],objId[4],objId[3],intersects[0].object.material,intersects[0].object]
+	    	 var idToGet = ''
+		     if( objId[0] === undefined || objId[0] === ''){
+		    	 idToGet += '-'
+		     }else{
+		    	 idToGet += '-' + objId[0]
+		     }
+		     if( objId[1] === undefined || objId[1] === ''){
+		    	 idToGet += '-'
+		     }else{
+		    	 idToGet += '-' + objId[1]
+		     }
+		     if( objId[2] === undefined || objId[2] === ''){
+		    	 idToGet += '-'
+		     }else{
+		    	 idToGet += '-' + objId[2]
+		     }
+		     if( objId[3] !== undefined){
+		    	var sourceToDo = dataSources['trans']
+		    	intersects[0].object.scale.set(3,3,3)
+				intersects[0].object.material = materialWhite
+				if( sourceToDo !== undefined){
+			    	var entityCollection = sourceToDo.entities
+			    	var idToDo = 'czm-trans' + idToGet + '-' + objId[3] 
+			    	var entityToDo = entityCollection.getById( idToDo)
+					if( entityToDo === undefined){
+					}else{
+				  		if( viewer.selectedEntity === entityToDo){
+				  			viewer.infoBox.viewModel.showInfo = false
+				  			viewer.selectedEntity = null
+				  		}else{
+				  			viewer.infoBox.viewModel.showInfo = false
+				  			viewer.selectedEntity = null
+					  		if( viewer.infoBox.viewModel.showInfo === false){
+					  			viewer.selectedEntity = entityToDo
+					  			viewer.infoBox.viewModel.showInfo = true
+					  		}else{
+					  			viewer.selectedEntity = entityToDo
+					  			viewer.infoBox.viewModel.showInfo = true
+					  		}
+					    	//
+					    	var bbb  = entityToDo.position._value
+							  var bbbc = Cesium.Cartographic.fromCartesian(bbb)
+					    	var bbbx = Cesium.Cartesian3.fromRadians(bbbc.longitude, bbbc.latitude, 100000.0)//, bbbc.height
+							viewer.camera.flyTo({
+							     destination : bbbx
+						  	})
+				  		}
+					}
+				}
+		     }else{
+			     if( objId[2] !== undefined){
+			    	var sourceToDo = dataSources[objId[2]]
+					if( sourceToDo !== undefined){
+				    	var entityCollection = sourceToDo.entities
+				    	var idToDo = 'czm-vsub' + idToGet
+				    	var entityToDo = entityCollection.getById( idToDo)
+						if( entityToDo === undefined){
+						}else{
+					  		if( viewer.selectedEntity === entityToDo){
+					  			viewer.infoBox.viewModel.showInfo = false
+					  			viewer.selectedEntity = null
+					  		}else{
+					  			viewer.infoBox.viewModel.showInfo = false
+					  			viewer.selectedEntity = null
+						  		if( viewer.infoBox.viewModel.showInfo === false){
+						  			viewer.infoBox.viewModel.showInfo = true
+						  		}else{
+						  			viewer.infoBox.viewModel.showInfo = true
+						  		}
+						    	//
+						    	var bbb22  = entityToDo.position._value
+								var bbbc = Cesium.Cartographic.fromCartesian(bbb22)
+						    	var bbbx = Cesium.Cartesian3.fromRadians(bbbc.longitude, bbbc.latitude, 100000.0)//, bbbc.height
+								viewer.camera.flyTo({
+								     destination : bbbx
+							  	})
+					  		}
+						}
+					}
+			     }else{
+				    if( objId[1] !== undefined){
+			    		var sourceToDo = dataSources[objId[1]]
+						if( sourceToDo !== undefined){
+				    		var entityCollection = sourceToDo.entities
+				    		var idToDo = 'czm-sub' + idToGet
+				    		var entityToDo = entityCollection.getById( idToDo)
+							if( entityToDo === undefined){
+							}else{
+								var uuu = entityToDo.position.getValue(aazm)
+						    	entityToDo.label.fillColor._value.green = 0.5
+						    	entityToDo.label.fillColor._value.red = 0.4
+						    	entityToDo.label.fillColor._value.blue = 0.8
+						    	entityToDo.label.scale = 3.9
+						    	//
+						    	var bbb22  = entityToDo.position._value
+								var bbbc = Cesium.Cartographic.fromCartesian(bbb22)
+						    	var bbbx = Cesium.Cartesian3.fromRadians(bbbc.longitude, bbbc.latitude, 1000000.0)//, bbbc.height
+								viewer.camera.flyTo({
+									destination : bbbx
+								})
+							}
+						}
+					}else{
+						if( objId[0] !== undefined){
+						 	var sourceToDo = dataSources[objId[0]]
+							if( sourceToDo !== undefined){
+							  	var entityCollection = sourceToDo.entities
+							  	var idToDo = 'czm-cat' + idToGet
+							  	var entityToDo = entityCollection.getById( idToDo)
+								if( entityToDo === undefined){
+								}else{
+							    	entityToDo.label.fillColor._value.green = 0.5
+							    	entityToDo.label.fillColor._value.red = 0.2
+							    	entityToDo.label.fillColor._value.blue = 0.8
+							    	entityToDo.label.scale = 3.9
+							    	//
+							    	var bbb22  = entityToDo.position._value
+									var bbbc = Cesium.Cartographic.fromCartesian(bbb22)
+							    	var bbbx = Cesium.Cartesian3.fromRadians(bbbc.longitude, bbbc.latitude, 1250000.0)//, bbbc.height
+									viewer.camera.flyTo({
+										destination : bbbx
+									})
+								}
+							}
+						}else{
+							if( objId[0] !== undefined){
+							}else{
+							}
+						}
+					}
+				}
+		     }
+		}
+	}
+}
+//
+function onWindowResize() {
+	windowHalfX = window.innerWidth / 2;
+	windowHalfY = window.innerHeight / 2;
+	three.camera.aspect = window.innerWidth / window.innerHeight;
+	three.camera.updateProjectionMatrix();
+	three.renderer.setSize( window.innerWidth, window.innerHeight );
+}
+//
+//Looping Renderer
+function renderCesium(){
+viewer.render();
+}
+
+function renderThreeObj(){
+	var delta = three.clock.getDelta();
+//	  for(var id=0; id< RuDobjects.length; id++){
+//			var object = RuDobjects[ id ]
+//		  object.rotation.x += 0.1 * delta
+//		 }
+	  three.renderer.render(three.scene, three.camera);
+}
+//
+function loop(){
+	requestAnimationFrame(loop)
+	viewer.render()
+	three.controls.update()
+	renderThreeObj()
+}
+//
+function createDate(dateStr){
+	var now = new Date(dateStr);
+	var qq = ''
+	var aaz = now.getFullYear().toString()
+	qq = now.getMonth()
+	qq++
+	qq = '' + qq
+	if(qq.length < 2){
+		qq = '0' + qq
+	}
+	aaz += '-' + qq
+	qq = '' + now.getDate()
+	if(qq.length < 2){
+		qq = '0' + qq
+	}
+	aaz += '-' + qq
+	qq = '' + now.getHours()
+	if(qq.length < 2){
+		qq = '0' + qq
+	}
+	aaz += 'T' + qq
+	qq = '' + now.getMinutes()
+	if(qq.length < 2){
+		qq = '0' + qq
+	}
+	aaz += ':' + qq
+	qq = '' + now.getSeconds()
+	if(qq.length < 2){
+		qq = '0' + qq
+	}
+	aaz += ':' + qq
+	qq = '' + now.getMilliseconds()
+	if(qq.length < 3){
+		qq = '0' + qq
+	}
+	if(qq.length < 3){
+		qq = '0' + qq
+	}
+	aaz += '.' + qq + 'Z'
+	return aaz
+}
+//
+setTimeout(function() {
+  	// Start renderers
+  	loop()
+}, 3000); 
+
+</script>
+</body>
+</html>

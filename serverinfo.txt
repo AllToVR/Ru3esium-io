@@ -1,0 +1,18 @@
+router.get('/apps/YourSiteFolder/*.*', function(req, res) {
+	  res.sendFile(req.path, { "root": __dirname });
+});
+
+var c3data1 = require('./javaScriptFolder/c3data1.js');
+
+socket.on('sendFullSampleZip', function(){
+	c3data1.sendFullSampleZip( socket)
+});
+
+socket.on('sendSampleZip', function(){
+	c3data1.sendSampleZip( socket)
+});
+
+socket.on('load3ZMLData', function(data, position, source){
+	c3data1.load3ZMLData( data, position, source, socket)
+});
+
