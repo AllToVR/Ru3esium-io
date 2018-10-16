@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <meta name="description" content="An interactive system useing CesiumJS and THREEjs.">
   <title>Interactive CesiumJS/THREEjs with socket.io</title>
-	<script src="http://mib.alltovr.com/socket.io/socket.io.js"></script>
-	<script src="http://mib.alltovr.com/Build/Cesium/Cesium.js"></script>
-	<script src="http://mib.alltovr.com/build/three.min.js"></script>
-	<script src="http://mib.alltovr.com/csj/layoutmgr.js"></script>
-	<script src="http://mib.alltovr.com/csj/trackball.js"></script>
+	<script src="http://YourSiteName.com/socket.io/socket.io.js"></script>
+	<script src="http://YourSiteName.com/Build/Cesium/Cesium.js"></script>
+	<script src="http://YourSiteName.com/build/three.min.js"></script>
+	<script src="http://YourSiteName.com/csj/layoutmgr.js"></script>
+	<script src="http://YourSiteName.com/csj/trackball.js"></script>
 <style>
 
 
-@import url(http://mib.alltovr.com/Build/Cesium/Widgets/widgets.css);
+@import url(http://YourSiteName.com/Build/Cesium/Widgets/widgets.css);
 html {
     height: 100%;
 }
@@ -81,7 +81,7 @@ body {
 
 <script>
 //
-var socket = io('http://mib.alltovr.com', { path: '/socket.io'})
+var socket = io('http://YourSiteName.com', { path: '/socket.io'})
 //
 socket.on('loadSampleZip', function( dataIn, position, source, nameToLoad){
 	czmlToMake[ czmlToMake.length] = {results: JSON.parse( dataIn), id: nameToLoad, sep: '-'}
@@ -638,7 +638,7 @@ function makeSpline( sentencex, sentObj, hColor, objList, material, transToUse, 
 //
 function loadFont() {
 	var loader = new THREE.FontLoader();
-	loader.load( 'http://mib.alltovr.com/fonts/helvetiker_bold.typeface.json', 
+	loader.load( 'http://YourSiteName.com/fonts/helvetiker_bold.typeface.json', 
 		function ( response ) {
 			font = response;
 		}, 
@@ -717,7 +717,7 @@ window.onload = function(){
 	document.addEventListener( 'mousedown', onDocumentMouseClick, false );
 	window.addEventListener( 'resize', onWindowResize, false );
 	//
-Cesium.BingMapsApi.defaultKey = '7w7YGKkN5fkrZ99DnhUj~LCB3kYH8zSqst_XZnOpwzg~AmTygt3wYi9eECs_OZBV0I958mbhsI15ClfBUe_kVp4Ol_XqaKRYAsJ1VW5ZVRau'
+Cesium.BingMapsApi.defaultKey = 'YourBingKey'
 	viewer = new Cesium.Viewer('cesiumContainer', {baseLayerPicker:false, sceneModePicker:false, homeButton:false, geocoder:false})
 	cScene = viewer.scene
 	clock = viewer.clock
